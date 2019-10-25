@@ -3,13 +3,6 @@ import matplotlib.pyplot as plt
 import math
 
 
-class K_Means:
-	def __init__(self, k =3, tolerance = 0.0001, max_iterations = 500):
-		self.k = k
-		self.tolerance = tolerance
-		self.max_iterations = max_iterations
-
-
 def distance(p, q):
     return np.linalg.norm(p - q, axis=1)
     
