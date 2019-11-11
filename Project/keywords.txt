@@ -1,0 +1,5 @@
+﻿Deep learning
+Reinforcement learning
+Q-learning
+Box2D
+Python
