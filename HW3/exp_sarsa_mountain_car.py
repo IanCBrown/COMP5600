@@ -104,24 +104,79 @@ gamma = 0.9
 epsilon = 0.8
 min_epsilon = 0
 
-rewards_and_var = exp_sarsa(learning_rate, gamma, epsilon, min_epsilon, number_of_episodes)
-avg_reward = rewards_and_var[0]
-var = rewards_and_var[1]
-episodes1 = 100*(np.arange(len(avg_reward)) + 1)
-episodes2 = 100*(np.arange(len(var)) + 1)
-plt.figure(1)
-plt.title("Average Reward vs. Episodes")
-plt.xlabel("Episodes")
-plt.ylabel("Average Reward")
-plt.plot(episodes1, avg_reward, color='blue')
-plt.figure(2)
-plt.title("Variance vs. Episodes")
-plt.xlabel("Episodes")
-plt.ylabel("Variance")
-plt.plot(episodes2, var, color='orange')
-plt.figure(3)
-plt.title("Average Reward w/ Variance vs. Episodes") 
-plt.xlabel("Episodes")
-plt.ylabel("Average Reward w/ Variance")
-plt.errorbar(episodes1, avg_reward, var, linestyle='None', marker='^')
-plt.show()
+def single_run():
+    """
+    Run the algorithm once 
+    """
+    rewards_and_var = exp_sarsa(learning_rate, gamma, epsilon, min_epsilon, number_of_episodes)
+    avg_reward = rewards_and_var[0]
+    var = rewards_and_var[1]
+    episodes1 = 100*(np.arange(len(avg_reward)) + 1)
+    episodes2 = 100*(np.arange(len(var)) + 1)
+    plt.figure("Average Reward vs. Episodes")
+    plt.title("Average Reward vs. Episodes")
+    plt.xlabel("Episodes")
+    plt.ylabel("Average Reward")
+    plt.plot(episodes1, avg_reward, color='blue')
+    plt.figure("Variance vs. Episodes")
+    plt.title("Variance vs. Episodes")
+    plt.xlabel("Episodes")
+    plt.ylabel("Variance")
+    plt.plot(episodes2, var, color='orange')
+    plt.figure("Average Reward w/ Variance vs. Episodes")
+    plt.title("Average Reward w/ Variance vs. Episodes") 
+    plt.xlabel("Episodes")
+    plt.ylabel("Average Reward w/ Variance")
+    plt.errorbar(episodes1, avg_reward, var, linestyle='None', marker='^', ecolor="orange")
+    plt.show()
+
+
+def multi_run(N):
+    """
+    Run the algorithm N times 
+    @param N - number of times to test (e.g. 20)
+    """
+    rewards = [] 
+    vars = [] 
+    for _ in range(N):
+        rewards_and_var = exp_sarsa(learning_rate, gamma, epsilon, min_epsilon, number_of_episodes)
+        avg_reward = rewards_and_var[0]
+        var = rewards_and_var[1]
+        rewards.append(avg_reward)
+        vars.append(var)
+
+    rewards = list(zip(*rewards))
+    vars = list(zip(*vars))
+    
+    reward_to_plot = []
+    for sublist in rewards:
+        reward_to_plot.append(np.mean(sublist))
+    var_to_plot = [] 
+    for sublist in vars:
+        var_to_plot.append(np.mean(sublist))
+    
+    episodes1 = 100*(np.arange(len(avg_reward)) + 1)
+    episodes2 = 100*(np.arange(len(var)) + 1)
+    plt.figure("Average Reward vs. Episodes")
+    plt.title("Average Reward vs. Episodes")
+    plt.xlabel("Episodes")
+    plt.ylabel("Average Reward")
+    plt.plot(episodes1, reward_to_plot, color='blue')
+    plt.savefig("exp_sarsa_results/Average_Reward_vs_Episodes.png")
+    plt.figure("Variance vs. Episodes")
+    plt.title("Variance vs. Episodes")
+    plt.xlabel("Episodes")
+    plt.ylabel("Variance")
+    plt.plot(episodes2, var_to_plot, color='orange')
+    plt.savefig("exp_sarsa_results/Variance_vs_Episodes.png")
+    plt.figure("Average Reward w/ Variance vs. Episodes")
+    plt.title("Average Reward w/ Variance vs. Episodes") 
+    plt.xlabel("Episodes")
+    plt.ylabel("Average Reward w/ Variance")
+    plt.errorbar(episodes1, reward_to_plot, var_to_plot, linestyle='None', marker='^', ecolor="orange")
+    plt.savefig("exp_sarsa_results/Average_Reward_and_Variance_vs_Episodes.png")
+    
+
+# choose multi or single run
+# single_run()
+multi_run(20)
