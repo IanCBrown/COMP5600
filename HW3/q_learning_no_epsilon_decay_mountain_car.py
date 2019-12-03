@@ -9,6 +9,7 @@ from gym import spaces
 from gym.utils import seeding
 
 # Resources: 
+# https://en.wikipedia.org/wiki/Mountain_car_problem
 # https://towardsdatascience.com/getting-started-with-reinforcement-learning-and-open-ai-gym-c289aca874f
 # https://towardsdatascience.com/reinforcement-learning-temporal-difference-sarsa-q-learning-expected-sarsa-on-python-9fecfda7467e
 
@@ -79,7 +80,11 @@ def q_learning(learning_rate, discount, epsilon, episodes):
 
         reward_list.append(total_reward)
 
-        if (i) % 100 == 0:
+        # choose how often to record data
+        # recording every data point will make the plots crowded
+        # 10 and 100 work well. 
+        recording_interval = 100
+        if i % recording_interval == 0:
             avg_reward = np.mean(reward_list)
             var = np.var(reward_list)
             var_list.append(var)

@@ -9,6 +9,7 @@ from gym import spaces
 from gym.utils import seeding
 
 # Resources: 
+# https://en.wikipedia.org/wiki/Mountain_car_problem
 # https://towardsdatascience.com/getting-started-with-reinforcement-learning-and-open-ai-gym-c289aca874f
 # https://towardsdatascience.com/reinforcement-learning-temporal-difference-sarsa-q-learning-expected-sarsa-on-python-9fecfda7467e
 
