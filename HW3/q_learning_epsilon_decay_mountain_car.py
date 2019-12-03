@@ -25,7 +25,7 @@ def epsilon_greedy(Q, state, action_space, epsilon):
         action = np.random.randint(0, action_space)
     return action 
 
-def q_learning(env, learning_rate, discount, epsilon, episodes):
+def q_learning(env, learning_rate, discount, epsilon, min_epsilon, episodes):
 
     states = (env.observation_space.high - env.observation_space.low)*np.array([10,100])
     states = np.round(states, 0).astype(int) + 1
@@ -37,6 +37,9 @@ def q_learning(env, learning_rate, discount, epsilon, episodes):
     reward_list = [] 
     var_list = [] 
     avg_reward_list = [] 
+
+    # reduce epsilon as time increases 
+    decay = (epsilon - min_epsilon)/episodes
 
     # Q learning main loop 
     for i in range(episodes):
@@ -76,6 +79,9 @@ def q_learning(env, learning_rate, discount, epsilon, episodes):
             total_reward += reward
             state_adj = next_state_adj
 
+        if epsilon > min_epsilon:
+            epsilon -= reduction 
+
         reward_list.append(total_reward)
 
         if (i) % 100 == 0:
@@ -93,8 +99,9 @@ number_of_episodes = 2500
 learning_rate = 0.1
 gamma = 0.9
 epsilon = 0.8
+min_epsilon = 0
 
-rewards_and_var = q_learning(env, learning_rate, gamma, epsilon, number_of_episodes)
+rewards_and_var = q_learning(env, learning_rate, gamma, epsilon, min_epsilon, number_of_episodes)
 avg_reward = rewards_and_var[0]
 var = rewards_and_var[1]
 episodes1 = 100*(np.arange(len(avg_reward)) + 1)
