@@ -84,7 +84,7 @@ def sarsa(learning_rate, discount, epsilon, min_epsilon, episodes):
         # choose how often to record data
         # recording every data point will make the plots crowded
         # 10 and 100 work well. 
-        recording_interval = 100:
+        recording_interval = 100
         if i % recording_interval == 0:
             avg_reward = np.mean(reward_list)
             var = np.var(reward_list)
