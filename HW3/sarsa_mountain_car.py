@@ -32,13 +32,12 @@ def sarsa(learning_rate, discount, epsilon, min_epsilon, episodes):
     # Q(s,a)
     Q_table = np.random.uniform(low = -1, high = 1, size = (states[0], states[1], env.action_space.n))
 
-
     reward_list = [] 
     var_list = [] 
     avg_reward_list = [] 
 
-    # update epsilon 
-    reduction = (epsilon - min_epsilon)/episodes
+    # reduce epsilon linearly as time increases 
+    decay = (epsilon - min_epsilon)/episodes
 
     # Q learning main loop 
     for i in range(episodes):
@@ -73,16 +72,20 @@ def sarsa(learning_rate, discount, epsilon, min_epsilon, episodes):
                 # update Q table
                 Q_table[state_adj[0], state_adj[1], action] += update
 
-            
             total_reward += reward
             state_adj = next_state_adj
 
+        # decay epsilon if still greater than min_epsilon
         if epsilon > min_epsilon:
-            epsilon -= reduction 
+            epsilon -= decay 
 
         reward_list.append(total_reward)
 
-        if (i) % 100 == 0:
+        # choose how often to record data
+        # recording every data point will make the plots crowded
+        # 10 and 100 work well. 
+        recording_interval = 100:
+        if i % recording_interval == 0:
             avg_reward = np.mean(reward_list)
             var = np.var(reward_list)
             var_list.append(var)

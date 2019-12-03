@@ -25,7 +25,7 @@ def epsilon_greedy(Q, state, action_space, epsilon):
         action = np.random.randint(0, action_space)
     return action 
 
-def q_learning(env, learning_rate, discount, epsilon, min_epsilon, episodes):
+def q_learning(env, learning_rate, discount, epsilon, episodes):
 
     states = (env.observation_space.high - env.observation_space.low)*np.array([10,100])
     states = np.round(states, 0).astype(int) + 1
@@ -33,12 +33,10 @@ def q_learning(env, learning_rate, discount, epsilon, min_epsilon, episodes):
     # Q(s,a)
     Q_table = np.random.uniform(low = -1, high = 1, size = (states[0], states[1], env.action_space.n))
 
+
     reward_list = [] 
     var_list = [] 
     avg_reward_list = [] 
-
-    # reduce epsilon linearly as time increases 
-    decay = (epsilon - min_epsilon)/episodes
 
     # Q learning main loop 
     for i in range(episodes):
@@ -78,17 +76,9 @@ def q_learning(env, learning_rate, discount, epsilon, min_epsilon, episodes):
             total_reward += reward
             state_adj = next_state_adj
 
-        # decay epsilon if still greater than min_epsilon
-        if epsilon > min_epsilon:
-            epsilon -= decay 
-
         reward_list.append(total_reward)
 
-        # choose how often to record data
-        # recording every data point will make the plots crowded
-        # 10 and 100 work well. 
-        recording_interval = 100
-        if i % recording_interval == 0:
+        if (i) % 100 == 0:
             avg_reward = np.mean(reward_list)
             var = np.var(reward_list)
             var_list.append(var)
@@ -103,9 +93,8 @@ number_of_episodes = 2500
 learning_rate = 0.1
 gamma = 0.9
 epsilon = 0.8
-min_epsilon = 0
 
-rewards_and_var = q_learning(env, learning_rate, gamma, epsilon, min_epsilon, number_of_episodes)
+rewards_and_var = q_learning(env, learning_rate, gamma, epsilon, number_of_episodes)
 avg_reward = rewards_and_var[0]
 var = rewards_and_var[1]
 episodes1 = 100*(np.arange(len(avg_reward)) + 1)
@@ -124,5 +113,5 @@ plt.figure("Average Reward w/ Variance vs. Episodes")
 plt.title("Average Reward w/ Variance vs. Episodes") 
 plt.xlabel("Episodes")
 plt.ylabel("Average Reward w/ Variance")
-plt.errorbar(episodes1, avg_reward, var, linestyle='None', marker='^', ecolor="orange")
+plt.errorbar(episodes1, avg_reward, var, linestyle='None', marker='^')
 plt.show()
