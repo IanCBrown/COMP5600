@@ -22,8 +22,7 @@ The checkpoint provided in the repo used the default parameters
 specified in the runner/agent and 150000~ playing steps for learning.
 
 The training took about 5h with CPU.
-This agent is playing in the above gif and in this video:
-https://youtu.be/CVZQOAlQib0
+This agent is playing in the above gif
 
 The agent sometimes cuts corners but other than that it can drive flawlessly for minutes.
 There are some occasional mistakes though.
